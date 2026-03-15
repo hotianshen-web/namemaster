@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NameMaster - Get Your Perfect Chinese Name</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #E63946 0%, #1D3557 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0,0.3);
+        }
+        h1 {
+            font-size: 2rem;
+            color: #1D3557;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+        .trust-badge {
+            text-align: center;
+            background: rgba(230, 57, 70, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            color: #E63946;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1D3557;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #E63946;
+        }
+        .traits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .trait-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .trait-label input:checked + span {
+            color: #E63946;
+        }
+        .t-label:has(input:checked) {
+            border-color: #E63946;
+            background: rgba(230, 57, 70, 0.05);
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #E63946 0%, #a0153e 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.3);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4);
+        }
+        .result-card {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        .name-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .name-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .name-chars {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #E63946;
+            font-family: 'Noto Serif SC', serif;
+        }
+        .name-pinyin {
+            color: #666;
+            font-size: 1.2rem;
+        }
+        .name-meaning {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .cta {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(230, 57, 70, 0.05);
+            border-radius: 10px;
+        }
+        .cta a {
+            color: #E63946;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .experts {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(29, 53, 87, 0.05);
+            border-radius: 10px;
+        }
+        .experts-title {
+            font-weight: 600;
+            color: #1D3557;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .expert-list {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #555;
+        }
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>NameMaster</h1>
+        <p class="subtitle">Get Your Perfect Chinese Name • Free 3 Names • Expert Vetted</p>
+        <div class="trust-badge">
+            ⭐ 4.9/5 • 100,000+ Happy Customers • 10+ Years Experience
+        </div>
+        <form id="nameForm">
+            <div class="form-group">
+                <label for="englishName">Your English Name</label>
+                <input type="text" id="englishName" placeholder="e.g. Emma Watson" required>
+            </div>
+            <div class="form-group">
+                <label>Your Gender</label>
+                <div style="display: flex; gap: 10px;">
+                    <label class="trait-label">
+                        <input type="radio" name="gender" value="male" required>
+                        <span>♂ Male</span>
+                    </label>
+                    <label class="trait-label">
+                        <input type="radio" name="gender" value="female">
+                        <span>♀ Female</span>
+                    </label>
+                    <label class="trait-label">
+                        <input type="radio" name="gender" value="other">
+                        <span>⚪ Other</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Select Personality Traits (Choose all that apply)</label>
+                <div class="traits">
+                    <label class="trait-label">
+                        <input type="checkbox" value="smart">
+                        <span>Smart & Intelligent</span>
+                    </label>
+                    <label class="trait-label">
+                        <input type="checkbox" value="strong">
+                        <span>Strong & Powerful</span>
+                    </label>
+                    <label class="trait-label">
+                        <input type="checkbox" value="beautiful">
+                        <span>>Beautiful & Elegant</span>
+                    </label>
+                    <label class="trait-label">
+                        <input type="checkbox" value="lucky">
+                        <span>Lucky & Auspicious</span>
+                    </label>
+                    <label class="trait-label">
+                        <input type="checkbox" value="unique">
+                        <span>Unique & Creative</span>
+                    </label>
+                    <label class="trait-label">
+                        <input type="checkbox" value="traditional">
+                        <span>Traditional & Classic</span>
+                    </label>
+                </div>
+            </div>
+            <button type="submit">🔮 Generate My Chinese Names</button>
+        </form>
+        <div class="result-card" id="resultCard">
+            <div id="nameResults"></div>
+        </div>
+        <div class="experts">
+            <div class="experts-title">Our Expert Team</div>
+            <div class="expert-list">
+                • 👨‍🏫 <strong>Master He</strong>: 30+ years traditional naming culture
+            </div>
+            <div class="expert-list">
+                • 🎓 <strong>Dr. Chen</strong>: Harvard Linguistics PhD for perfect pronunciation matching
+            </div>
+            <div class="expert-list">
+                • ⚛️ <strong>Master Qingyuan</strong>: Taoist heritage brings you good fortune
+            </div>
+        </div>
+        <footer>
+            © 2026 NameMaster • Crafted with ❤️ by Chinese naming experts
+        </footer>
+    </div>
+
+    <script>
+        // Sample names for embed demo
+        const sampleNames = [
+            {
+                chars: "丽美",
+                pinyin: "Lì Měi",
+                meaning: "Beautiful and graceful. This name reflects elegance and natural beauty, perfect for someone who appreciates art and culture.",
+                traits: ["Beautiful", "Elegant", "Traditional"]
+            },
+            {
+                chars: "文思",
+                pinyin: "Wén Sī",
+                meaning: "Cultured thought. This name suggests intelligence, creativity, and literary talent.",
+                traits: ["Smart", "Intelligent", "Creative"]
+            },
+            {
+                chars: "大龙",
+                pinyin: "Dà Lóng",
+                meaning: "Great dragon. Dragon is the most powerful symbol in Chinese culture, representing strength and good fortune.",
+                traits: ["Strong", "Powerful", "Lucky"]
+            }
+        ];
+
+        document.getElementById('nameForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Show results
+            document.getElementById('resultCard').style.display = 'block';
+            const container = document.getElementById('nameResults');
+            container.innerHTML = '';
+            // In the embedded version, we just show the sample results
+            sampleNames.forEach(name => {
+                const card = document.createElement('div');
+                card.className = 'name-card';
+                card.innerHTML = `
+                    <div class="name-header">
+                        <div>
+                            <div class="name-chars">${name.chars}</div>
+                            <div class="name-pinyin">${name.pinyin}</div>
+                        </div>
+                    </div>
+                    <div class="name-meaning">${name.meaning}</div>
+                `;
+                container.appendChild(card);
+            });
+            // Scroll to results
+            document.getElementById('resultCard').scrollIntoView({behavior: 'smooth'});
+        });
+    </script>
+</body>
+</html>
